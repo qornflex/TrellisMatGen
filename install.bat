@@ -161,17 +161,11 @@ if %errorlevel%==0 (
     exit /b 1
 )
 
-REM ===================================================================================================================
-REM Confirm installation folder
-REM ===================================================================================================================
-
-set INSTALL_DIR=%CD%
-
 REM -------------------------------------------------------------------------------------------------------------------
 REM CLONE MODELS
 REM -------------------------------------------------------------------------------------------------------------------
 
-set TRELLIS_MODELS_DIR="%INSTALL_DIR%\models"
+set TRELLIS_MODELS_DIR="%CD%\models"
 if not exist "%TRELLIS_MODELS_DIR%\" (
     mkdir "%TRELLIS_MODELS_DIR%"
 )
@@ -229,7 +223,7 @@ pip install pillow imageio imageio-ffmpeg tqdm easydict opencv-python-headless s
 
 REM utils3d
 
-pip install git+https://github.com/EasternJournalist/utils3d.git@9a4eb15e4021b67b12c460c7057d642626897ec8
+pip install -e ./tmp/extensions/utils3d
 
 REM Blender
 
@@ -249,7 +243,7 @@ pip install pygltflib
 
 REM KAOLIN
 
-pip install kaolin -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.7.0_cu128.html
+pip install ./tmp/wheels/kaolin-0.18.0-cp310-cp310-win_amd64.whl
 
 REM NVIDIA FRAST
 
@@ -268,7 +262,7 @@ REM SPCONV
 pip install spconv-cu120
 
 REM VOX2SEQ
-set VOX2SEQ_EXT_DIR="%INSTALL_DIR%\extensions\vox2seq"
+set VOX2SEQ_EXT_DIR="%CD%\extensions\vox2seq"
 if exist %VOX2SEQ_EXT_DIR% (
 	xcopy /E /I extensions\vox2seq .\tmp\extensions\vox2seq /Y
 	pip install ./tmp/extensions/vox2seq
@@ -281,11 +275,6 @@ pip install gradio==4.44.1 gradio_litmodel3d==0.0.1
 REM FLASH-ATTN
 
 pip install https://huggingface.co/marcorez8/flash-attn-windows-blackwell/resolve/e1480e12fc744c1edf2f50831a5363d0faef45e4/flash_attn-2.7.4.post1-cp310-cp310-win_amd64-torch2.7.0-cu128/flash_attn-2.7.4.post1-cp310-cp310-win_amd64.whl
-
-REM EDIT trellis_image_to_3d.py to get better results
-
-set FILE_TO_EDIT=%INSTALL_DIR%\trellis\pipelines\trellis_image_to_3d.py
-powershell -NoProfile -Command "$file='%FILE_TO_EDIT%'; $old='\(\s*518\s*,\s*518\s*\)'; $new='(1036, 1036)'; (Get-Content -LiteralPath $file) | ForEach-Object { $_ -replace $old, $new } | Set-Content -LiteralPath $file"
 
 echo.
 echo ============================================

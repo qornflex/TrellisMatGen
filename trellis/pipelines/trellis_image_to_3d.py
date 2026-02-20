@@ -109,7 +109,7 @@ class TrellisImageTo3DPipeline(Pipeline):
         size = int(size * 1.2)
         bbox = center[0] - size // 2, center[1] - size // 2, center[0] + size // 2, center[1] + size // 2
         output = output.crop(bbox)  # type: ignore
-        output = output.resize((518, 518), Image.Resampling.LANCZOS)
+        output = output.resize((1036, 1036), Image.Resampling.LANCZOS)
         output = np.array(output).astype(np.float32) / 255
         output = output[:, :, :3] * output[:, :, 3:4]
         output = Image.fromarray((output * 255).astype(np.uint8))
@@ -130,7 +130,7 @@ class TrellisImageTo3DPipeline(Pipeline):
             assert image.ndim == 4, "Image tensor should be batched (B, C, H, W)"
         elif isinstance(image, list):
             assert all(isinstance(i, Image.Image) for i in image), "Image list should be list of PIL images"
-            image = [i.resize((518, 518), Image.LANCZOS) for i in image]
+            image = [i.resize((1036, 1036), Image.LANCZOS) for i in image]
             image = [np.array(i.convert('RGB')).astype(np.float32) / 255 for i in image]
             image = [torch.from_numpy(i).permute(2, 0, 1).float() for i in image]
             image = torch.stack(image).to(self.device)
