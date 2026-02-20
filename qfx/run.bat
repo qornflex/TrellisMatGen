@@ -20,6 +20,8 @@ REM Recommended to set to 'native' if run only once.
 set ATTN_BACKEND=flash-attn
 REM ATTN_BACKEND can be 'flash-attn' or 'xformers', default is 'flash-attn'
 
+set PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True,garbage_collection_threshold:0.3,max_split_size_mb:128
+
 set PYTHONPATH=%PY_LIB_PATH%;%PY_LIB_PATH%\matgen;%PYTHONPATH%
 
 cd /D "%PY_LIB_PATH%"

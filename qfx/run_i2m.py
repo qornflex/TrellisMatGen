@@ -31,7 +31,7 @@ warnings.filterwarnings('ignore')
 
 # Cap VRAM
 total_vram = torch.cuda.get_device_properties(0).total_memory  # total VRAM in bytes
-target_vram = 12 * 1024**3  # 12GB in bytes
+target_vram = 14 * 1024**3  # 14GB in bytes
 fraction_vram = target_vram / total_vram
 torch.cuda.set_per_process_memory_fraction(fraction_vram, device=0)
 
